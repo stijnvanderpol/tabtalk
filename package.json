@@ -1,0 +1,11 @@
+{
+  "name": "tabtalk",
+  "version": "1.0.0",
+  "description": "Tabtalk enables browsing contexts within the same domain to communicate with each other.",
+  "main": "index.ts",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "Stijn van der Pol",
+  "license": "ISC"
+}
