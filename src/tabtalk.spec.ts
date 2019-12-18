@@ -1,14 +1,23 @@
 import { Tabtalk } from './tabtalk';
-import { stub } from 'sinon';
 
 describe('Tabtalk', () => {
     describe('init', () => {
-        it('throws if the session storage api is not available', () => {
-            const sessionStorageStub = stub(window, 'sessionStorage').value(undefined);
+    
+        // todo: add a test that verifies the app throws an error on unavailable session storage
+
+        it('does not throw an error if the session storage api is available', () => {
+            const tabtalk = new Tabtalk();
+            expect(() => tabtalk.init()).not.toThrow();
+        });
+
+        it('sets a uuid after being initialized', () => {
             const tabtalk = new Tabtalk();
 
-            expect(() => tabtalk.init()).toThrow();
-            sessionStorageStub.restore();
+            expect(tabtalk.getId()).toBeUndefined();
+            tabtalk.init();
+
+            expect(tabtalk.getId()).not.toBeUndefined();
+            expect(typeof tabtalk.getId()).toEqual('string');
         });
     });
 });
