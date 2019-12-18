@@ -3,7 +3,6 @@ export const isSessionStorageAvailable = (): boolean => !!window.sessionStorage;
 export const throwIfSessionStorageUnavailable = () => {
 
     if (!isSessionStorageAvailable()) {
-        console.log('throwing');
         throw new Error('[tabtalk] session storage is not available.')
     }
 }
