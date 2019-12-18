@@ -4,7 +4,7 @@
   "description": "Tabtalk enables browsing contexts within the same domain to communicate with each other.",
   "main": "index.ts",
   "scripts": {
-    "test": "test",
+    "test": "jest",
     "build": "webpack --mode=development",
     "watch": "webpack --mode=development --watch",
     "build:prod": "webpack --mode=production",
