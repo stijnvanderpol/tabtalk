@@ -10,6 +10,9 @@
     "build:prod": "webpack --mode=production",
     "watch:prod": "webpack --mode=production --watch"
   },
+  "jest": {
+    "setupFiles": ["jest-localstorage-mock"]
+  },
   "author": "Stijn van der Pol",
   "license": "ISC",
   "devDependencies": {
@@ -21,6 +24,7 @@
     "babel-jest": "^24.9.0",
     "babel-loader": "^8.0.6",
     "jest": "^24.9.0",
+    "jest-localstorage-mock": "^2.4.0",
     "sinon": "^7.5.0",
     "ts-loader": "^6.2.1",
     "typescript": "^3.7.3",
