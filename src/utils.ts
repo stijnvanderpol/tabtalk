@@ -6,8 +6,17 @@ export const throwIfSessionStorageUnavailable = () => {
     }
 }
 
+/**
+ * Returns a pseudo-random uuid.
+ */
 export const generateUuid = () => {
-    const now = Date.now();
+    let uuid = '';
+
+    for(let i = 0; i < 10; i++) {
+        uuid = uuid.concat(getRandomLetter());
+    }
+    
+    return `${uuid}-${Date.now()}`;
 }
 
 /**
