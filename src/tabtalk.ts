@@ -7,4 +7,6 @@ export class Tabtalk {
         throwIfSessionStorageUnavailable();
         this.id = generateUuid();
     }
+
+    getId = () => this.id;
 }
