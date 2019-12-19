@@ -23,7 +23,10 @@ export class Tabtalk {
     }
 
     getId = () => this.id;
-
+    
+    /**
+     * Handles storage events that are caused by Tabtalk and transmits the serialized message if necessary.
+     */
     private onStorageUpdate = (event: StorageEvent) => {
         const { key, newValue: value } = event;
 
@@ -36,7 +39,10 @@ export class Tabtalk {
             }
         }
     }
-
+    
+    /**
+     * Deserializes a JSON string to a TabtalkMessage object.
+     */
     private deserializeMessage = (message: string): TabtalkMessage<any> => {
         try {
             return JSON.parse(message);
@@ -44,11 +50,17 @@ export class Tabtalk {
             throw new Error(`[tabtalk] could not deserialize message contents: ${e}`);
         }
     }
-
+    
+    /**
+     * Sends a message to all Tabtalk instances.
+     */
     broadcast = (body: any) => {
         this.sendMessage(null, body);
     }
     
+    /**
+     * Sends a message to a specific Tabtalk instance.
+     */
     sendMessage = (recipientId: TabtalkMessageMeta['recipientId'] = null, body: any ) => {
         throwIfLocalStorageUnavailable();
 
