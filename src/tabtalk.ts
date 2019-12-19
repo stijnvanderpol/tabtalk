@@ -28,18 +28,18 @@ export class Tabtalk {
         const { key, newValue: value } = event;
 
         if (this.isTabtalkMessage(key)) {
-            const body = this.deserializeMessageBody(value);
+            const message = this.deserializeMessage(value);
 
-            if (this.isMessageAddressedToMe(body) || this.isMessageAddressedToEveryone(body)) {
-                const event = new CustomEvent(this.TABTALK_MESSAGE_EVENT_NAME, { detail: body });
+            if (this.isMessageAddressedToMe(message) || this.isMessageAddressedToEveryone(message)) {
+                const event = new CustomEvent(this.TABTALK_MESSAGE_EVENT_NAME, { detail: message });
                 window.dispatchEvent(event);    
             }
         }
     }
 
-    private deserializeMessageBody = (messageBody: string): TabtalkMessage<any> => {
+    private deserializeMessage = (message: string): TabtalkMessage<any> => {
         try {
-            return JSON.parse(messageBody);
+            return JSON.parse(message);
         } catch(e) {
             throw new Error(`[tabtalk] could not deserialize message contents: ${e}`);
         }
