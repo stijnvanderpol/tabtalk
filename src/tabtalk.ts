@@ -1,11 +1,16 @@
 import { throwIfLocalStorageUnavailable, generateUuid } from './utils';
 import { TabtalkMessage, TabtalkMessageMeta, TabtalkMessageFactory } from './tabtalkMessageFactory';
 
+export type TabtalkMessageEventCallback = <T = any>(message: TabtalkMessage<T>) => void;
+export type TabtalkMessageEventHandler = (event: CustomEvent) => void;
+
+
 export class Tabtalk {
     private id: string;
     private TABTALK_WINDOW_OBJECT_PROPERTY_KEY = 'tabtalk';
     private TABTALK_MESSAGE_KEY_PREFIX = 'TABTALK-';
     private TABTALK_MESSAGE_EVENT_NAME = 'TABTALK_MESSAGE_RECEIVED';
+    private messageEventHandlers: TabtalkMessageEventHandler[] = [];
     
     init() {
         throwIfLocalStorageUnavailable();
@@ -23,6 +28,17 @@ export class Tabtalk {
     }
 
     getId = () => this.id;
+
+    subscribe = (callback: TabtalkMessageEventCallback) => {
+        const handler = this.createTabtalkMessageEventHandler(callback);
+        this.messageEventHandlers.push(handler);
+
+        window.addEventListener(this.TABTALK_MESSAGE_EVENT_NAME, handler);
+    }
+
+    private createTabtalkMessageEventHandler = (callback: TabtalkMessageEventCallback): TabtalkMessageEventHandler => {
+        return (event) => callback(event.detail);
+    }
     
     /**
      * Handles storage events that are caused by Tabtalk and transmits the serialized message if necessary.
