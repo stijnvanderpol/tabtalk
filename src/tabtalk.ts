@@ -10,7 +10,7 @@ export class Tabtalk {
     private TABTALK_WINDOW_OBJECT_PROPERTY_KEY = 'tabtalk';
     private TABTALK_MESSAGE_KEY_PREFIX = 'TABTALK-';
     private TABTALK_MESSAGE_EVENT_NAME = 'TABTALK_MESSAGE_RECEIVED';
-    private messageEventHandlers: TabtalkMessageEventHandler[] = [];
+    private messageEventHandlersMap: {[key: string]: TabtalkMessageEventHandler} = {}
     
     init() {
         throwIfLocalStorageUnavailable();
@@ -28,12 +28,45 @@ export class Tabtalk {
     }
 
     getId = () => this.id;
-
+    
+    /**
+     * Adds a Tabtalk message event handler with the passed callback.
+     */
     subscribe = (callback: TabtalkMessageEventCallback) => {
+        if(!callback) {
+            console.warn('[tabtalk] falsy callback passed.');
+            return;
+        }
+
         const handler = this.createTabtalkMessageEventHandler(callback);
-        this.messageEventHandlers.push(handler);
+        this.messageEventHandlersMap[callback.toString()] = handler;
 
         window.addEventListener(this.TABTALK_MESSAGE_EVENT_NAME, handler);
+    }
+    
+    /**
+     * Removes the Tabtalk message event handler that belongs to the passed callback. 
+     * If no callback is passed it will remove all the Tabtalk message event handlers.
+     * 
+     * @param callbackToUnsubscribe (optional) The callback of the event listener to remove.
+     */
+    unsubscribe = (callbackToUnsubscribe?: TabtalkMessageEventCallback) => {
+        if (callbackToUnsubscribe) {
+            const handler = this.messageEventHandlersMap[callbackToUnsubscribe.toString()];
+            window.removeEventListener(this.TABTALK_MESSAGE_EVENT_NAME, handler);
+            delete this.messageEventHandlersMap[callbackToUnsubscribe.toString()];
+        } else {
+            this.unsubscribeAllEventHandlers();
+        }
+    }
+
+    private unsubscribeAllEventHandlers = () => {
+        Object.keys(this.messageEventHandlersMap).forEach(key => {
+            const handler = this.messageEventHandlersMap[key];
+            window.removeEventListener(this.TABTALK_MESSAGE_EVENT_NAME, handler);
+        });
+
+        this.messageEventHandlersMap = {};
     }
 
     private createTabtalkMessageEventHandler = (callback: TabtalkMessageEventCallback): TabtalkMessageEventHandler => {
