@@ -1,9 +1,9 @@
-export const isSessionStorageAvailable = (): boolean => !!window.sessionStorage;
+export const isLocalStorageAvailable = (): boolean => !!window.localStorage;
 
-export const throwIfSessionStorageUnavailable = () => {
+export const throwIfLocalStorageUnavailable = () => {
 
-    if (!isSessionStorageAvailable()) {
-        throw new Error('[tabtalk] session storage is not available.')
+    if (!isLocalStorageAvailable()) {
+        throw new Error('[tabtalk] local storage is not available.')
     }
 }
 
