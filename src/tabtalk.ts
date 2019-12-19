@@ -1,5 +1,5 @@
 import { throwIfLocalStorageUnavailable, generateUuid } from './utils';
-import { TabtalkMessageMeta, TabtalkMessageFactory } from './tabtalkMessageFactory';
+import { TabtalkMessage, TabtalkMessageMeta, TabtalkMessageFactory } from './tabtalkMessageFactory';
 
 export class Tabtalk {
     private id: string;
@@ -26,11 +26,22 @@ export class Tabtalk {
 
     private onStorageUpdate = (event: StorageEvent) => {
         const { key, newValue: value } = event;
-        const isTabtalkMessage = key.match(new RegExp(`^${this.TABTALK_MESSAGE_KEY_PREFIX}`));
 
-        if (isTabtalkMessage) {
-            const event = new CustomEvent(this.TABTALK_MESSAGE_EVENT_NAME, { detail: value });
-            window.dispatchEvent(event);    
+        if (this.isTabtalkMessage(key)) {
+            const body = this.deserializeMessageBody(value);
+
+            if (this.isMessageAddressedToMe(body) || this.isMessageAddressedToEveryone(body)) {
+                const event = new CustomEvent(this.TABTALK_MESSAGE_EVENT_NAME, { detail: body });
+                window.dispatchEvent(event);    
+            }
+        }
+    }
+
+    private deserializeMessageBody = (messageBody: string): TabtalkMessage<any> => {
+        try {
+            return JSON.parse(messageBody);
+        } catch(e) {
+            throw new Error(`[tabtalk] could not deserialize message contents: ${e}`);
         }
     }
 
@@ -54,4 +65,8 @@ export class Tabtalk {
     private generateMessageKey = (senderId: string) => {
         return `${this.TABTALK_MESSAGE_KEY_PREFIX}${senderId}-${Date.now()}`;
     }
+    
+    private isTabtalkMessage = (storageEventKey: string) => storageEventKey.match(new RegExp(`^${this.TABTALK_MESSAGE_KEY_PREFIX}`));
+    private isMessageAddressedToMe = (message: TabtalkMessage<any>) => message.meta.recipientId === this.id;
+    private isMessageAddressedToEveryone = (message: TabtalkMessage<any>) => message.meta.recipientId === null;
 }
