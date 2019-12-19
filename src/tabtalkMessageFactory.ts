@@ -35,7 +35,7 @@ export class TabtalkMessageFactory {
         }
 
         if (validationErrors.length) {
-            throw new Error('Invalid Tabtalk message:' + validationErrors.join(', '));
+            throw new Error('[tabtalk] invalid Tabtalk message:' + validationErrors.join(', '));
         }
     }
 
