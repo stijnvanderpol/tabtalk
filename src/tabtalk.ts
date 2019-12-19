@@ -33,6 +33,10 @@ export class Tabtalk {
             window.dispatchEvent(event);    
         }
     }
+
+    broadcast = (body: any) => {
+        this.sendMessage(null, body);
+    }
     
     sendMessage = (recipientId: TabtalkMessageMeta['recipientId'] = null, body: any ) => {
         throwIfLocalStorageUnavailable();
