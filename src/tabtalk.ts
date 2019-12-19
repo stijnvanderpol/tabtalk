@@ -1,4 +1,5 @@
 import { throwIfLocalStorageUnavailable, generateUuid } from './utils';
+import { TabtalkMessageMeta, TabtalkMessageFactory } from './tabtalkMessageFactory';
 
 export class Tabtalk {
     private id: string;
@@ -31,5 +32,22 @@ export class Tabtalk {
             const event = new CustomEvent(this.TABTALK_MESSAGE_EVENT_NAME, { detail: value });
             window.dispatchEvent(event);    
         }
+    }
+    
+    sendMessage = (recipientId: TabtalkMessageMeta['recipientId'] = null, body: any ) => {
+        throwIfLocalStorageUnavailable();
+
+        const factory = new TabtalkMessageFactory();
+        factory.setSenderId(this.id);
+        factory.setRecipientId(recipientId);
+        factory.setBody(body);
+
+        const serializedMessage = JSON.stringify(factory.build());
+        
+        window.localStorage.setItem(this.generateMessageKey(this.id), serializedMessage);
+    }
+
+    private generateMessageKey = (senderId: string) => {
+        return `${this.TABTALK_MESSAGE_KEY_PREFIX}${senderId}-${Date.now()}`;
     }
 }
