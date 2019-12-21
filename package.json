@@ -2,7 +2,7 @@
   "name": "@sovanderpol/tabtalk",
   "version": "2.2.0",
   "description": "Tabtalk enables browsing contexts within the same domain to communicate with each other.",
-  "main": "dist/tabtalk.js",
+  "main": "index.js",
   "scripts": {
     "test": "jest",
     "build": "webpack --mode=development",
@@ -37,6 +37,6 @@
     "package.json",
     "readme.md",
     "license",
-    "dist/tabtalk.js"
+    "index.js"
   ]
 }
