@@ -88,7 +88,7 @@ export class Tabtalk {
     private onStorageUpdate = (event: StorageEvent) => {
         const { key, newValue: value } = event;
 
-        if (this.isTabtalkMessage(key) && value) {
+        if (this.isTabtalkMessage(key) && !this.isMessageBeingDeleted(value)) {
             const message = this.deserializeMessage(value);
 
             if (this.isMessageAddressedToMe(message) || this.isMessageAddressedToEveryone(message)) {
@@ -146,4 +146,5 @@ export class Tabtalk {
     private isTabtalkMessage = (storageEventKey: string) => storageEventKey.match(new RegExp(`^${this.TABTALK_MESSAGE_KEY_PREFIX}`));
     private isMessageAddressedToMe = (message: TabtalkMessage<any>) => message.meta.recipientId === this.id;
     private isMessageAddressedToEveryone = (message: TabtalkMessage<any>) => message.meta.recipientId === null;
+    private isMessageBeingDeleted = (serializedMessage: string | null) => !serializedMessage;
 }
