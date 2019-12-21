@@ -11,13 +11,13 @@ export class Tabtalk {
     private TABTALK_MESSAGE_EVENT_NAME = 'TABTALK_MESSAGE_RECEIVED';
     private messageEventHandlersMap: {[key: string]: TabtalkMessageEventHandler} = {}
     private garbageCollectionDelay = 3000;
-    
-    init() {
+
+    constructor() {
         throwIfLocalStorageUnavailable();
         this.id = generateUuid();
         window.addEventListener('storage', this.onStorageUpdate);
     }
-
+    
     getId = () => this.id;
     
     /**
