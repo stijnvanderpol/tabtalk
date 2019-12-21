@@ -7,7 +7,6 @@ export type TabtalkMessageEventHandler = (event: CustomEvent) => void;
 
 export class Tabtalk {
     private id: string;
-    private TABTALK_WINDOW_OBJECT_PROPERTY_KEY = 'tabtalk';
     private TABTALK_MESSAGE_KEY_PREFIX = 'TABTALK-';
     private TABTALK_MESSAGE_EVENT_NAME = 'TABTALK_MESSAGE_RECEIVED';
     private messageEventHandlersMap: {[key: string]: TabtalkMessageEventHandler} = {}
