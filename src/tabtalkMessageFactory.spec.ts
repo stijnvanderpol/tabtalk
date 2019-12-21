@@ -20,6 +20,22 @@ describe('TabtalkMessageFactory', () => {
         expect(VALIDATION_ERROR_INVALID_SENDER_ID).not.toBeFalsy();
     });
 
+    it('sets the createdAt property to the current epoch time within a 1 second margin', () => {
+        const factory = new TabtalkMessageFactory();
+        factory.setBody({foo: 'bar'});
+        factory.setRecipientId(generateUuid());
+        factory.setSenderId(generateUuid());
+        
+        const { createdAt } = factory.build().meta;
+
+        const now = Date.now();
+        const oneSecondBeforeNow = now - 1;
+        const oneSecondAfterNow = now + 1;
+        
+        expect(oneSecondBeforeNow <= createdAt).toBeTruthy();
+        expect(oneSecondAfterNow >= createdAt).toBeTruthy();
+    });
+
     it('returns a TabtalkMessage with the correct properties', () => {
         const bodyStub = {foo: 'bar'};
         const recipientIdStub = generateUuid();
@@ -31,12 +47,11 @@ describe('TabtalkMessageFactory', () => {
         factory.setRecipientId(recipientIdStub);
         factory.setSenderId(senderIdStub);
 
-        expect(factory.build()).toStrictEqual({
-            body: bodyStub,
-            meta: {
-                recipientId: recipientIdStub,
-                senderId: senderIdStub
-            }
-        });
+        const { body, meta } = factory.build();
+
+        expect(body).toEqual(bodyStub);
+        expect(meta.recipientId).toEqual(recipientIdStub);
+        expect(meta.senderId).toEqual(senderIdStub);
+        expect(meta.createdAt).not.toBeFalsy();
     });
 });

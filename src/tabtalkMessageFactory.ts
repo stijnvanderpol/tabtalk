@@ -6,6 +6,7 @@ export interface TabtalkMessage<T> {
 export interface TabtalkMessageMeta {
     recipientId: string | null;
     senderId: string;
+    createdAt: number;
 }
 
 export const VALIDATION_ERROR_INVALID_SENDER_ID = 'Invalid senderId';
@@ -14,6 +15,7 @@ export class TabtalkMessageFactory {
     body: any;
     recipientId: TabtalkMessageMeta['recipientId'];
     senderId: TabtalkMessageMeta['senderId'];
+    createdAt: TabtalkMessageMeta['createdAt'];
 
     setBody = (body: any) => {
         this.body = body;
@@ -46,7 +48,8 @@ export class TabtalkMessageFactory {
             body: this.body,
             meta: {
                 recipientId: this.recipientId,
-                senderId: this.senderId
+                senderId: this.senderId,
+                createdAt: Date.now()
             }
         }
     };
