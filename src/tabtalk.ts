@@ -88,7 +88,7 @@ export class Tabtalk {
     private onStorageUpdate = (event: StorageEvent) => {
         const { key, newValue: value } = event;
 
-        if (this.isTabtalkMessage(key)) {
+        if (this.isTabtalkMessage(key) && value) {
             const message = this.deserializeMessage(value);
 
             if (this.isMessageAddressedToMe(message) || this.isMessageAddressedToEveryone(message)) {
