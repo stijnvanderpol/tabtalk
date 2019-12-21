@@ -133,7 +133,10 @@ export class Tabtalk {
         window.localStorage.setItem(messageKey, serializedMessage);
         setTimeout(() => this.clearMessage(messageKey), this.garbageCollectionDelay);
     }
-
+    
+    /**
+     * Removes a Tabtalk message from the local storage.
+     */
     private clearMessage = (messageKey: string) => {
         throwIfLocalStorageUnavailable();
         localStorage.removeItem(messageKey);
