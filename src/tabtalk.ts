@@ -11,6 +11,7 @@ export class Tabtalk {
     private TABTALK_MESSAGE_KEY_PREFIX = 'TABTALK-';
     private TABTALK_MESSAGE_EVENT_NAME = 'TABTALK_MESSAGE_RECEIVED';
     private messageEventHandlersMap: {[key: string]: TabtalkMessageEventHandler} = {}
+    private garbageCollectionDelay = 3000;
     
     init() {
         throwIfLocalStorageUnavailable();
@@ -117,10 +118,17 @@ export class Tabtalk {
         factory.setSenderId(this.id);
         factory.setRecipientId(recipientId);
         factory.setBody(body);
-
+        
+        const messageKey = this.generateMessageKey(this.id);
         const serializedMessage = JSON.stringify(factory.build());
         
-        window.localStorage.setItem(this.generateMessageKey(this.id), serializedMessage);
+        window.localStorage.setItem(messageKey, serializedMessage);
+        setTimeout(() => this.clearMessage(messageKey), this.garbageCollectionDelay);
+    }
+
+    private clearMessage = (messageKey: string) => {
+        throwIfLocalStorageUnavailable();
+        localStorage.removeItem(messageKey);
     }
 
     private generateMessageKey = (senderId: string) => {
