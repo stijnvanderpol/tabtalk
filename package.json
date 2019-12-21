@@ -1,6 +1,6 @@
 {
   "name": "@sovanderpol/tabtalk",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Tabtalk enables browsing contexts within the same domain to communicate with each other.",
   "main": "index.ts",
   "scripts": {
@@ -11,7 +11,9 @@
     "watch:prod": "webpack --mode=production --watch"
   },
   "jest": {
-    "setupFiles": ["jest-localstorage-mock"]
+    "setupFiles": [
+      "jest-localstorage-mock"
+    ]
   },
   "author": "Stijn van der Pol",
   "license": "ISC",
