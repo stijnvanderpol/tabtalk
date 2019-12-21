@@ -1,5 +1,5 @@
 {
-  "name": "tabtalk",
+  "name": "@sovanderpol/tabtalk",
   "version": "1.0.0",
   "description": "Tabtalk enables browsing contexts within the same domain to communicate with each other.",
   "main": "index.ts",
