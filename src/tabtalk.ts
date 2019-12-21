@@ -18,6 +18,15 @@ export class Tabtalk {
         window.addEventListener('storage', this.onStorageUpdate);
     }
     
+    /**
+     * Permanently deactivates the Tabtalk instance by removing event handlers. Note that the event 
+     * handlers of parallel instances of Tabtalk within the same browsing context will be affected as well.
+     */
+    destroy() {
+        window.removeEventListener('storage', this.onStorageUpdate);
+        this.unsubscribeAllEventHandlers();
+    }
+    
     getId = () => this.id;
     
     /**
