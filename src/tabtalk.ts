@@ -124,6 +124,19 @@ export class Tabtalk {
         setTimeout(() => this.clearMessage(messageKey), this.garbageCollectionDelay);
     }
     
+    private getAllTabtalkMessageKeys = () => {
+        const keys: string[] = [];
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+
+            if (this.isTabtalkMessage(key)) {
+                keys.push(key);
+            }
+        }
+
+        return keys;
+    }
+    
     /**
      * Removes a Tabtalk message from the local storage.
      */
