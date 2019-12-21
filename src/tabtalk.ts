@@ -31,6 +31,14 @@ export class Tabtalk {
     getId = () => this.id;
     
     /**
+     * Set the garbage collection delay. All messages will be deleted by their sender after this delay.
+     * @param delay Time time in milliseconds between sending and garbage collection.
+     */
+    setGarbageCollectionDelay = (delay: number) => {
+        this.garbageCollectionDelay = delay;
+    }
+    
+    /**
      * Adds a Tabtalk message event handler with the passed callback.
      */
     subscribe = (callback: TabtalkMessageEventCallback) => {
