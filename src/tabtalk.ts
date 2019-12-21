@@ -27,20 +27,22 @@ export class Tabtalk {
         this.unsubscribeAllEventHandlers();
     }
     
-    getId = () => this.id;
+    getId() {
+        return this.id;
+    }
     
     /**
      * Set the garbage collection delay. All messages will be deleted by their sender after this delay.
      * @param delay Time time in milliseconds between sending and garbage collection.
      */
-    setGarbageCollectionDelay = (delay: number) => {
+    setGarbageCollectionDelay(delay: number) {
         this.garbageCollectionDelay = delay;
     }
     
     /**
      * Adds a Tabtalk message event handler with the passed callback.
      */
-    subscribe = (callback: TabtalkMessageEventCallback) => {
+    subscribe(callback: TabtalkMessageEventCallback) {
         if(!callback) {
             console.warn('[tabtalk] falsy callback passed.');
             return;
@@ -58,7 +60,7 @@ export class Tabtalk {
      * 
      * @param callbackToUnsubscribe (optional) The callback of the event listener to remove.
      */
-    unsubscribe = (callbackToUnsubscribe?: TabtalkMessageEventCallback) => {
+    unsubscribe(callbackToUnsubscribe?: TabtalkMessageEventCallback) {
         if (callbackToUnsubscribe) {
             const handler = this.messageEventHandlersMap[callbackToUnsubscribe.toString()];
             window.removeEventListener(this.TABTALK_MESSAGE_EVENT_NAME, handler);
@@ -111,14 +113,14 @@ export class Tabtalk {
     /**
      * Sends a message to all Tabtalk instances.
      */
-    broadcast = (body: any) => {
+    broadcast(body: any) {
         this.sendMessage(null, body);
     }
     
     /**
      * Sends a message to a specific Tabtalk instance.
      */
-    sendMessage = (recipientId: TabtalkMessageMeta['recipientId'] = null, body: any ) => {
+    sendMessage(recipientId: TabtalkMessageMeta['recipientId'] = null, body: any ) {
         throwIfLocalStorageUnavailable();
 
         const factory = new TabtalkMessageFactory();
@@ -136,7 +138,7 @@ export class Tabtalk {
     /**
      * Removes all Tabtalk messages from local storage that are due for garbage collection.
      */
-    garbageCollect = () => {
+    garbageCollect() {
         const tabtalkMessageKeys = this.getAllTabtalkMessageKeys();
 
         tabtalkMessageKeys.forEach(tabtalkMessageKey => {
