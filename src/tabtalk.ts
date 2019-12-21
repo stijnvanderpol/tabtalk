@@ -124,6 +124,24 @@ export class Tabtalk {
         setTimeout(() => this.clearMessage(messageKey), this.garbageCollectionDelay);
     }
     
+    /**
+     * Removes all Tabtalk messages from local storage that are due for garbage collection.
+     */
+    garbageCollect = () => {
+        const tabtalkMessageKeys = this.getAllTabtalkMessageKeys();
+
+        tabtalkMessageKeys.forEach(tabtalkMessageKey => {
+            const message = localStorage.getItem(tabtalkMessageKey);
+            if (message) {
+                const deserializedMessage = this.deserializeMessage(message);
+
+                if (this.isMessageDueForGarbageCollection(deserializedMessage)) {
+                    localStorage.removeItem(tabtalkMessageKey);
+                }
+            };
+        });
+    }
+
     private getAllTabtalkMessageKeys = () => {
         const keys: string[] = [];
         for (let i = 0; i < localStorage.length; i++) {
@@ -153,4 +171,5 @@ export class Tabtalk {
     private isMessageAddressedToMe = (message: TabtalkMessage<any>) => message.meta.recipientId === this.id;
     private isMessageAddressedToEveryone = (message: TabtalkMessage<any>) => message.meta.recipientId === null;
     private isMessageBeingDeleted = (serializedMessage: string | null) => !serializedMessage;
+    private isMessageDueForGarbageCollection = (message: TabtalkMessage<any>) => message.meta.createdAt < (Date.now() - this.garbageCollectionDelay);
 }

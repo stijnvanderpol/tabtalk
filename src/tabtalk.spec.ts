@@ -20,4 +20,34 @@ describe('Tabtalk', () => {
             expect(typeof tabtalk.getId()).toEqual('string');
         });
     });
+
+    describe('garbageCollect', () => {
+        it('removes all tabtalk messages that are due for garbage collection', (finish) => {
+            const tabtalk = new Tabtalk();
+            tabtalk.init();
+            
+            // Set the initial garbage collection delay to 10s to prevent automatic
+            // garbage collection.
+            tabtalk.setGarbageCollectionDelay(10000);
+            
+            tabtalk.broadcast({message: 'some arbitrary message'});
+            tabtalk.broadcast({message: 'some arbitrary message'});
+            
+            setTimeout(() => {
+                tabtalk.broadcast({message: 'some arbitrary message'});
+                
+                // Set garbage collection delay to 500ms so that every message that has 
+                // existed for longer than 500ms will be considered due for garbage collection.
+                tabtalk.setGarbageCollectionDelay(500);
+                
+                expect(localStorage.length).toEqual(3);
+                tabtalk.garbageCollect();
+                
+                // The third message has not existed for longer than 500ms, so should not
+                // be garbage collected.
+                expect(localStorage.length).toEqual(1);
+                finish();
+            }, 1000);
+        });
+    })
 });
