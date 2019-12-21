@@ -32,8 +32,9 @@ export class Tabtalk {
     }
     
     /**
-     * Set the garbage collection delay. All messages will be deleted by their sender after this delay.
-     * @param delay Time time in milliseconds between sending and garbage collection.
+     * Set the garbage collection delay. All messages that have existed for longer than this 
+     * delay will be considered due for garbage collection.
+     * @param delay Time in milliseconds between creation and garbage collection.
      */
     setGarbageCollectionDelay(delay: number) {
         this.garbageCollectionDelay = delay;
