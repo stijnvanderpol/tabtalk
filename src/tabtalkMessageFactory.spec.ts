@@ -20,7 +20,7 @@ describe('TabtalkMessageFactory', () => {
         expect(VALIDATION_ERROR_INVALID_SENDER_ID).not.toBeFalsy();
     });
 
-    it('sets the createdAt property to the current epoch time within a 1 second margin', () => {
+    it('sets the createdAt property to the current epoch time within a 10ms second margin', () => {
         const factory = new TabtalkMessageFactory();
         factory.setBody({foo: 'bar'});
         factory.setRecipientId(generateUuid());
@@ -29,8 +29,8 @@ describe('TabtalkMessageFactory', () => {
         const { createdAt } = factory.build().meta;
 
         const now = Date.now();
-        const oneSecondBeforeNow = now - 1;
-        const oneSecondAfterNow = now + 1;
+        const oneSecondBeforeNow = now - 5;
+        const oneSecondAfterNow = now + 5;
         
         expect(oneSecondBeforeNow <= createdAt).toBeTruthy();
         expect(oneSecondAfterNow >= createdAt).toBeTruthy();
