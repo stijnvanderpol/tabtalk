@@ -1,6 +1,6 @@
 {
   "name": "@sovanderpol/tabtalk",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Tabtalk enables browsing contexts within the same domain to communicate with each other.",
   "main": "dist/tabtalk.js",
   "types": "dist/index.d.ts",
