@@ -1,7 +1,7 @@
 const path = require('path');
 
 module.exports = {
-    entry: './index.ts',
+    entry: path.resolve(__dirname, 'index.ts'),
     module: {
         rules: [
             {
@@ -15,7 +15,7 @@ module.exports = {
         extensions: ['.ts', '.js']
     },
     output: {
-        filename: 'index.js',
-        path: path.resolve(__dirname, '')
+        filename: 'tabtalk.js',
+        path: path.resolve(__dirname, 'dist')
     }
 };
